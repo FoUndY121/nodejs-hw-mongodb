@@ -4,9 +4,13 @@ const Contact = require('../models/contact');
 const getAllContacts = async (req, res) => {
   try {
     const contacts = await Contact.find();
-    res.json(contacts);
+    res.status(200).json({
+      status: 200,
+      message: 'Успешно найдены контакты!',
+      data: contacts,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch contacts' });
+    res.status(500).json({ message: 'Не удалось получить контакты' });
   }
 };
 
@@ -17,12 +21,16 @@ const getContactById = async (req, res) => {
     const contact = await Contact.findById(id);
 
     if (!contact) {
-      return res.status(404).json({ message: 'Contact not found' });
+      return res.status(404).json({ message: 'Контакт не найден' });
     }
 
-    res.json(contact);
+    res.status(200).json({
+      status: 200,
+      message: `Успешно найден контакт с id ${id}!`,
+      data: contact,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch contact by ID' });
+    res.status(500).json({ message: 'Не удалось получить контакт по ID' });
   }
 };
 
