@@ -1,0 +1,33 @@
+{
+  "name": "nodejs-hw-mongodb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FoUndY121/nodejs-hw-mongodb.git"
+  },
+  "keywords": [],
+  "author": "foundy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FoUndY121/nodejs-hw-mongodb/issues"
+  },
+  "homepage": "https://github.com/FoUndY121/nodejs-hw-mongodb#readme",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.30.1",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.1",
+    "morgan": "^1.10.0"
+  }
+}
