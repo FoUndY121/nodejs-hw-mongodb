@@ -11,7 +11,9 @@ function setupServer() {
 
   app.get('/contacts', getContacts);
   app.get('/contacts/:contactId', getContact);
-
+  app.use((req, res) => {
+    res.status(404).json({ message: 'Not found' });
+  });
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
