@@ -1,12 +1,12 @@
 const express = require('express');
-const morgan = require('morgan');
 const cors = require('cors');
+const pino = require('pino-http')();
 const contactsRouter = require('./routes/contacts');
 
 const app = express();
 
 app.use(cors());
-app.use(morgan('dev'));
+app.use(pino); // Заменяет morgan
 app.use(express.json());
 
 app.use('/api/contacts', contactsRouter);
