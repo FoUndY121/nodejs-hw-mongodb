@@ -11,6 +11,13 @@ function setupServer() {
 
   app.get('/contacts', getContacts);
   app.get('/contacts/:contactId', getContact);
+  app.use((error, req, res, next) => {
+    const { status = 404, message = 'Something went wrong' } = error;
+    res.status(status).json({
+      status,
+      message,
+    });
+  });
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
