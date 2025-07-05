@@ -2,17 +2,15 @@ const mongoose = require('mongoose');
 
 const contactSchema = new mongoose.Schema(
   {
-    name: {
+    name: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    email: { type: String },
+    isFavourite: { type: Boolean, default: false },
+    contactType: {
       type: String,
-      required: [true, 'Contact must have a name'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Contact must have an email'],
-    },
-    phone: {
-      type: String,
-      required: [true, 'Contact must have a phone number'],
+      enum: ['work', 'home', 'personal'],
+      required: true,
+      default: 'personal',
     },
   },
   { timestamps: true }
