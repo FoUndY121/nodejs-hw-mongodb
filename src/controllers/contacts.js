@@ -1,46 +1,41 @@
-const mongoose = require('mongoose');
-const { getAllContacts, getContactById } = require('../services/contacts');
+const contactsService = require('../services/contacts');
+const createError = require('http-errors');
 
-async function getContacts(req, res, next) {
-  try {
-    const contacts = await getAllContacts();
-    res.status(200).json({
-      status: 200,
-      message: 'Successfully found contacts!',
-      data: contacts,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
+const getAll = async (req, res) => {
+  const contacts = await contactsService.getAllContacts();
+  res.json({ status: 200, message: 'OK', data: contacts });
+};
 
-async function getContact(req, res, next) {
-  try {
-    const { contactId } = req.params;
+const getById = async (req, res) => {
+  const contact = await contactsService.getContactById(req.params.contactId);
+  if (!contact) throw createError(404, 'Contact not found');
+  res.json({ status: 200, data: contact });
+};
 
-    if (!mongoose.isValidObjectId(contactId)) {
-      return res.status(400).json({
-        status: 404,
-        message: 'Contact not found',
-      });
-    }
+const createContact = async (req, res) => {
+  const newContact = await contactsService.addContact(req.body);
+  res.status(201).json({ status: 201, message: 'Created', data: newContact });
+};
 
-    const contact = await getContactById(contactId);
-    if (!contact) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Contact not found',
-      });
-    }
+const updateContact = async (req, res) => {
+  const updated = await contactsService.updateContactById(
+    req.params.contactId,
+    req.body
+  );
+  if (!updated) throw createError(404, 'Contact not found');
+  res.json({ status: 200, message: 'Updated', data: updated });
+};
 
-    res.status(200).json({
-      status: 200,
-      message: `Successfully found contact with id ${contactId}!`,
-      data: contact,
-    });
-  } catch (error) {
-    next(error);
-  }
-}
+const deleteContact = async (req, res) => {
+  const deleted = await contactsService.deleteContactById(req.params.contactId);
+  if (!deleted) throw createError(404, 'Contact not found');
+  res.status(204).send();
+};
 
-module.exports = { getContacts, getContact };
+module.exports = {
+  getAll,
+  getById,
+  createContact,
+  updateContact,
+  deleteContact,
+};

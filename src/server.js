@@ -1,36 +1,23 @@
 const express = require('express');
-const cors = require('cors');
-const pino = require('pino-http')();
-const { getContacts, getContact } = require('./controllers/contacts');
+require('dotenv').config();
+const { initMongoConnection } = require('./db/initMongoConnection');
+const contactsRouter = require('./routers/contacts');
+const notFoundHandler = require('./middlewares/notFoundHandler');
+const errorHandler = require('./middlewares/errorHandler');
 
-function setupServer() {
-  const app = express();
+const app = express();
+app.use(express.json());
+app.use('/api/contacts', contactsRouter);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-  app.use(cors());
-  app.use(pino);
+const PORT = process.env.PORT || 3000;
 
-  app.get('/contacts', getContacts);
-  app.get('/contacts/:contactId', getContact);
-  app.use((error, req, res, next) => {
-    const { status = 404, message = 'Something went wrong' } = error;
-    res.status(status).json({
-      status,
-      message,
-    });
-  });
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' });
-  });
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' });
-  });
-
-  const PORT = process.env.PORT || 3000;
+const setupServer = async () => {
+  await initMongoConnection();
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
+};
 
-  return app;
-}
-
-module.exports = { setupServer };
+module.exports = setupServer;
