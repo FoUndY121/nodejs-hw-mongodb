@@ -8,7 +8,16 @@ const contactSchema = new Schema(
     isFavourite: { type: Boolean, default: false },
     contactType: { type: String, required: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false,
+  }
 );
+
+contactSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    return ret;
+  },
+});
 
 module.exports = model('Contact', contactSchema);
