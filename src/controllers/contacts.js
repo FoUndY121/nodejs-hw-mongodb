@@ -3,8 +3,27 @@ const createError = require('http-errors');
 
 const getAll = async (req, res, next) => {
   try {
-    const contacts = await contactsService.getAllContacts();
-    res.json({ status: 200, message: 'OK', data: contacts });
+    const {
+      page = 1,
+      perPage = 10,
+      sortBy = 'name',
+      sortOrder = 'asc',
+    } = req.query;
+
+    const paginationOptions = {
+      page: parseInt(page),
+      perPage: parseInt(perPage),
+      sortBy,
+      sortOrder,
+    };
+
+    const result = await contactsService.getAllContacts(paginationOptions);
+
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully found contacts!',
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
