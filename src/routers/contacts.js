@@ -2,13 +2,15 @@ const express = require('express');
 const router = express.Router();
 const contactsController = require('../controllers/contacts');
 const ctrlWrapper = require('../utils/ctrlWrapper');
-
+const authenticate = require('../middlewares/authMiddleware'); // Додано
 const validateBody = require('../utils/validateBody');
 const isValidId = require('../middlewares/isValidId');
 const {
   contactAddSchema,
   contactUpdateSchema,
 } = require('../utils/contactSchemas');
+
+router.use(authenticate); // Застосовуємо автентифікацію до всіх роутів
 
 router.get('/', ctrlWrapper(contactsController.getAll));
 

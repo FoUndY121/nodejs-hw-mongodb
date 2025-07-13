@@ -2,12 +2,16 @@ const express = require('express');
 require('dotenv').config();
 const { initMongoConnection } = require('./db/initMongoConnection');
 const contactsRouter = require('./routers/contacts');
+const authRouter = require('./routers/auth'); // Змінено
 const notFoundHandler = require('./middlewares/notFoundHandler');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 app.use(express.json());
+
 app.use('/contacts', contactsRouter);
+app.use('/auth', authRouter); // Змінено
+
 app.use(notFoundHandler);
 app.use(errorHandler);
 

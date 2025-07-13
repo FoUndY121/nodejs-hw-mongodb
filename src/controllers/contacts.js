@@ -15,6 +15,7 @@ const getAll = async (req, res, next) => {
       perPage: parseInt(perPage),
       sortBy,
       sortOrder,
+      userId: req.user._id, // Додано
     };
 
     const result = await contactsService.getAllContacts(paginationOptions);
@@ -31,7 +32,10 @@ const getAll = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    const contact = await contactsService.getContactById(req.params.contactId);
+    const contact = await contactsService.getContactById(
+      req.params.contactId,
+      req.user._id
+    );
     if (!contact) throw createError(404, 'Contact not found');
     res.json({ status: 200, data: contact });
   } catch (error) {
@@ -41,7 +45,10 @@ const getById = async (req, res, next) => {
 
 const createContact = async (req, res, next) => {
   try {
-    const newContact = await contactsService.addContact(req.body);
+    const newContact = await contactsService.addContact({
+      ...req.body,
+      userId: req.user._id, // Додано
+    });
     res.status(201).json({ status: 201, message: 'Created', data: newContact });
   } catch (error) {
     next(error);
@@ -52,7 +59,8 @@ const updateContact = async (req, res, next) => {
   try {
     const updated = await contactsService.updateContactById(
       req.params.contactId,
-      req.body
+      req.body,
+      req.user._id // Додано
     );
     if (!updated) throw createError(404, 'Contact not found');
     res.json({ status: 200, message: 'Updated', data: updated });
@@ -64,7 +72,8 @@ const updateContact = async (req, res, next) => {
 const deleteContact = async (req, res, next) => {
   try {
     const deleted = await contactsService.deleteContactById(
-      req.params.contactId
+      req.params.contactId,
+      req.user._id // Додано
     );
     if (!deleted) throw createError(404, 'Contact not found');
     res.status(204).send();
