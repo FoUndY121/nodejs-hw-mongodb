@@ -8,4 +8,6 @@ const sessionSchema = new mongoose.Schema({
   refreshTokenValidUntil: { type: Date, required: true },
 });
 
-module.exports = mongoose.model('Session', sessionSchema);
+const Session = mongoose.model('Session', sessionSchema);
+
+module.exports = Session;

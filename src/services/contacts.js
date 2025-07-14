@@ -1,4 +1,4 @@
-const Contact = require('../models/contact');
+const Contact = require('../models/contact.js');
 
 const getAllContacts = async ({ page, perPage, sortBy, sortOrder, userId }) => {
   const skip = (page - 1) * perPage;
@@ -24,7 +24,7 @@ const getAllContacts = async ({ page, perPage, sortBy, sortOrder, userId }) => {
 };
 
 const getContactById = async (id, userId) => {
-  return Contact.findOne({ _id: id, userId }); // Фільтр за userId
+  return Contact.findOne({ _id: id, userId });
 };
 
 const addContact = async (data) => {
@@ -32,11 +32,11 @@ const addContact = async (data) => {
 };
 
 const updateContactById = async (id, data, userId) => {
-  return Contact.findOneAndUpdate({ _id: id, userId }, data, { new: true }); // Фільтр за userId
+  return Contact.findOneAndUpdate({ _id: id, userId }, data, { new: true });
 };
 
 const deleteContactById = async (id, userId) => {
-  return Contact.findOneAndDelete({ _id: id, userId }); // Фільтр за userId
+  return Contact.findOneAndDelete({ _id: id, userId });
 };
 
 module.exports = {

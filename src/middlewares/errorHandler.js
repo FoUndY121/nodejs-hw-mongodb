@@ -1,6 +1,8 @@
 const { HttpError } = require('http-errors');
 
 const errorHandler = (err, req, res, next) => {
+  console.error('❌ Error caught by errorHandler:', err);
+
   if (err instanceof HttpError) {
     res.status(err.status).json({
       status: err.status,
@@ -10,7 +12,6 @@ const errorHandler = (err, req, res, next) => {
     return;
   }
 
-  // Для остальных ошибок — 500 и общее сообщение
   res.status(500).json({
     status: 500,
     message: 'Internal Server Error',

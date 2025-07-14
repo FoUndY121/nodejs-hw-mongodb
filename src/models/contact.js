@@ -7,7 +7,8 @@ const contactSchema = new Schema(
     email: String,
     isFavourite: { type: Boolean, default: false },
     contactType: { type: String, required: true },
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Додано
+    photo: String,
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   {
     timestamps: true,
